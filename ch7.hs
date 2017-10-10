@@ -49,4 +49,33 @@ hundredsDigit :: Integral a => a -> a
 hundredsDigit = tensDigit . (`div` 10)
 
 
+foldBool :: a -> a -> Bool -> a
+foldBool = error "Error: Need to implement foldBool!"
+
+foldBool1 :: a -> a -> Bool -> a
+foldBool1 x y cond =
+  case cond of
+    True -> x
+    False -> y
+
+foldBool2 :: a -> a -> Bool -> a
+foldBool2 x y cond
+  | cond = x
+  | otherwise = y
+
+foldBool3 :: a -> a -> Bool -> a
+foldBool3 x y True = x
+foldBool3 x y False = y
+
+
+g :: (a -> b) -> (a, c) -> (b, c)
+g = \f -> \t -> ((f . fst) t, snd t)
+
+
+roundTrip :: (Show a, Read b) => a -> b
+roundTrip = read . show
+
+main = do
+  print (roundTrip 4 :: Float)
+  print (id 4)
 
