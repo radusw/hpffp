@@ -1,6 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 
-module Ch8 where
+module Main where
 
 import Data.List (intersperse)
 
@@ -90,3 +90,15 @@ digits n = loop n []
 
 wordNumber :: Int -> String
 wordNumber = concat . intersperse "-" . map digitToWord . digits
+
+
+main :: IO ()
+main = do 
+  {-
+  putStrLn "fib of ?"
+  str <- getLine
+  let n = read str :: Integer
+  (putStrLn . show . fib) n
+  -}
+  --ghc ch8.hs && time ./ch8
+  (putStrLn . show . fib) 1000000
