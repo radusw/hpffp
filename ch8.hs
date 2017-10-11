@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 module Ch8 where
 
 import Data.List (intersperse)
@@ -9,7 +11,7 @@ naiveFact n = n * naiveFact (n - 1)
 
 fact :: Integer -> Integer
 fact n = 
-  let loop acc n
+  let loop !acc n
         | n <= 0    = acc
         | otherwise = loop (n * acc) (n - 1)
   in loop 1 n
@@ -27,7 +29,7 @@ f' y i s r = (f y i s r) - (f y i s 1)
 fib :: Integer -> Integer
 fib n = (fib' 0 1 n)
   where
-  fib' a b n
+  fib' a !b n
     | n <= 1    = b
     | otherwise = fib' b (a + b) (n - 1)
 
@@ -81,7 +83,7 @@ digitToWord 9 = "nine"
 digits :: Int -> [Int]
 digits n = loop n []
   where
-  loop n acc
+  loop n !acc
     | n == 0    = acc
     | otherwise = let (q, r) = n `divMod` 10
                   in loop q (r : acc)
