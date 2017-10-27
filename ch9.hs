@@ -1,5 +1,7 @@
 module Ch9 where
 
+import Data.Char
+
 eftBool :: Bool -> Bool -> [Bool]
 eftBool False False = [False]
 eftBool False True  = [False, True]
@@ -50,3 +52,56 @@ myZip = myZipWith (,)
 myZipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 myZipWith f (x:xs) (y:ys) = (f x y) : myZipWith f xs ys
 myZipWith _ _ _           = []
+
+
+capitalizeUntilIndex :: Int -> String -> String
+capitalizeUntilIndex i s@(c:cs)
+  | i > 0 = toUpper c : capitalizeUntilIndex (i - 1) cs
+  | otherwise = s
+capitalizeUntilIndex _ _ = []
+
+capitalizeHead :: String -> Char
+capitalizeHead = toUpper . head
+
+
+caesar :: Int -> String -> String
+caesar i s@(c:cs)
+  | i /= 0 = (chr . (\x -> offset + mod (ord x + i - offset) alphabet)) c : caesar i cs
+  | otherwise = s
+  where
+    offset = ord 'a'
+    alphabet = ord 'z' - ord 'a' + 1
+caesar _ _ = []
+
+unCaesar :: Int -> String -> String
+unCaesar i s = caesar (-i) s
+
+
+myReverse :: (Foldable f) => f a -> [a]
+myReverse = foldl (flip (:)) []
+
+myFlatten :: [[a]] -> [a]
+myFlatten = flatMap id
+
+flatMap :: (a -> [b]) -> [a] -> [b]
+flatMap f (a:as) = f a ++ flatMap f as
+flatMap _ _ = []
+
+
+myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
+myMaximumBy comp (a:as) =
+  let loop (h:t) acc = loop t x where x = case comp h acc of
+                                            GT -> h
+                                            otherwise -> acc
+      loop []    acc = acc
+  in loop as a
+
+myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
+myMinimumBy f as = myMaximumBy (flip f) as
+
+myMaximum :: (Ord a) => [a] -> a
+myMaximum = myMaximumBy compare
+
+myMinimum :: (Ord a) => [a] -> a
+myMinimum = myMaximumBy (flip compare)
+
