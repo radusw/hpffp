@@ -22,6 +22,19 @@ append Nil         ys = ys
 append (Cons x xs) ys = Cons x $ xs `append` ys
 
 
+-- ch18
+instance Monoid (List a) where
+  mempty                 = Nil
+  mappend Nil x          = x
+  mappend x Nil          = x
+  mappend (Cons x xs) ys = Cons x $ xs <> ys
+
+instance Monad List where
+  return            = pure
+  Nil         >>= _ = Nil
+  (Cons x xs) >>= f = f x <> (xs >>= f)
+
+
 fold :: (a -> b -> b) -> b -> List a -> b 
 fold _ b Nil = b
 fold f b (Cons h t) = f h (fold f b t)
